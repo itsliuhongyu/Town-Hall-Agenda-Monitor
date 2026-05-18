@@ -12,6 +12,12 @@ jobs:
     # Set up the runner once: repo Settings > Actions > Runners > New self-hosted runner.
     runs-on: self-hosted
 
+    defaults:
+      run:
+        # Quotes the workspace path so spaces in the directory name don't break bash
+        working-directory: ${{ github.workspace }}
+        shell: bash
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
