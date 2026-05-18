@@ -1,0 +1,51 @@
+name: Weekly Agenda Pipeline
+
+on:
+  schedule:
+    # Every Monday at 9:00 AM Eastern (14:00 UTC). Adjust to your timezone.
+    - cron: "0 14 * * 1"
+  workflow_dispatch: # Allow manual trigger from the GitHub Actions tab
+
+jobs:
+  run-pipeline:
+    # Runs on YOUR machine via a self-hosted GitHub Actions runner.
+    # Set up the runner once: repo Settings > Actions > Runners > New self-hosted runner.
+    runs-on: self-hosted
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run pipeline
+        # LM Studio must be running on your machine before this fires.
+        run: python3 pipeline.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "Agenda Bot"
+          git config user.email "agenda-bot@users.noreply.github.com"
+          git add high.csv medium.csv low.csv
+          # Only commit if there are actual changes
+          git diff --cached --quiet || git commit -m "Weekly agenda results - $(date +'%Y-%m-%d')"
+          git push
+
+      - name: Email high.csv
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          to: ${{ secrets.MAIL_TO }}
+          from: Agenda Bot <${{ secrets.MAIL_USERNAME }}>
+          subject: "Weekly High-Priority Agenda Items — ${{ github.run_id }}"
+          body: |
+            Hi,
+
+            Attached is this week's high-priority agenda items across all tracked town boards.
+
+            Run date: ${{ github.event.repository.updated_at }}
+          attachments: high.csv
