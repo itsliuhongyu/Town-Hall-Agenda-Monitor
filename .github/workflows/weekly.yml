@@ -16,14 +16,18 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Set up Python deps
+      - name: Set up Python venv
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install pandas requests playwright openai pdfplumber python-docx beautifulsoup4
-          python3 -m playwright install chromium
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install pandas requests playwright openai pdfplumber python-docx beautifulsoup4 numpy
+          python -m playwright install chromium
 
       - name: Run pipeline
-        run: python3 pipeline.py
+        run: |
+          . .venv/bin/activate
+          python pipeline.py
 
       - name: Commit and push results
         run: |
