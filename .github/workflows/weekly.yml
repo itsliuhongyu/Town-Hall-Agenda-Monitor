@@ -21,15 +21,15 @@ jobs:
 
     steps:
       - name: Pull latest code
-        run: cd "$PROJECT_DIR" && git pull origin main
+        run: cd '${{ env.PROJECT_DIR }}' && git pull origin main
 
       - name: Run pipeline
         # LM Studio must be running on your machine before this fires.
-        run: cd "$PROJECT_DIR" && python3 pipeline.py
+        run: cd '${{ env.PROJECT_DIR }}' && python3 pipeline.py
 
       - name: Commit and push results
         run: |
-          cd "$PROJECT_DIR"
+          cd '${{ env.PROJECT_DIR }}'
           git config user.name "Agenda Bot"
           git config user.email "agenda-bot@users.noreply.github.com"
           git add high.csv medium.csv low.csv
