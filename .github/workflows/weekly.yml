@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           to: ${{ secrets.MAIL_TO }}
           from: Agenda Bot <${{ secrets.MAIL_USERNAME }}>
-          subject: "Weekly High-Priority Agenda Items — ${{ github.run_id }}"
+          subject: "Weekly High-Priority Agenda Items - ${{ github.run_id }}"
           body: |
             Hi,
 
