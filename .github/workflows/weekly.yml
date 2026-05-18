@@ -2,34 +2,32 @@ name: Weekly Agenda Pipeline
 
 on:
   schedule:
-    # Every Monday at 9:00 AM Eastern (14:00 UTC). Adjust to your timezone.
+    # Every Monday at 9:00 AM Eastern / 8:00 AM Central during standard time.
     - cron: "0 14 * * 1"
-  workflow_dispatch: # Allow manual trigger from the GitHub Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   run-pipeline:
-    # Runs on YOUR machine via a self-hosted GitHub Actions runner.
-    # Set up the runner once: repo Settings > Actions > Runners > New self-hosted runner.
     runs-on: self-hosted
 
-    env:
-      PROJECT_DIR: /Users/hongyuliu/Desktop/Projects/Dataform Requests/4. On the Agenda
-
-    defaults:
-      run:
-        shell: bash
-
     steps:
-      - name: Pull latest code
-        run: cd '${{ env.PROJECT_DIR }}' && git pull origin main
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python deps
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pandas requests playwright openai pdfplumber python-docx beautifulsoup4
+          python3 -m playwright install chromium
 
       - name: Run pipeline
-        # LM Studio must be running on your machine before this fires.
-        run: cd '${{ env.PROJECT_DIR }}' && python3 pipeline.py
+        run: python3 pipeline.py
 
       - name: Commit and push results
         run: |
-          cd '${{ env.PROJECT_DIR }}'
           git config user.name "Agenda Bot"
           git config user.email "agenda-bot@users.noreply.github.com"
           git add high.csv medium.csv low.csv
@@ -51,6 +49,4 @@ jobs:
             Hi,
 
             Attached is this week's high-priority agenda items across all tracked town boards.
-
-            Run date: ${{ github.event.repository.updated_at }}
           attachments: high.csv
