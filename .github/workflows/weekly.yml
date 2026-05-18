@@ -14,15 +14,12 @@ jobs:
 
     defaults:
       run:
-        # Quotes the workspace path so spaces in the directory name don't break bash
-        working-directory: ${{ github.workspace }}
+        working-directory: /Users/hongyuliu/Desktop/Projects/Dataform Requests/4. On the Agenda
         shell: bash
 
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Pull latest code
+        run: git pull origin main
 
       - name: Run pipeline
         # LM Studio must be running on your machine before this fires.
