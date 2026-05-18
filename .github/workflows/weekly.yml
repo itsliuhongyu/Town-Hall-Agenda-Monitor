@@ -12,25 +12,27 @@ jobs:
     # Set up the runner once: repo Settings > Actions > Runners > New self-hosted runner.
     runs-on: self-hosted
 
+    env:
+      PROJECT_DIR: /Users/hongyuliu/Desktop/Projects/Dataform Requests/4. On the Agenda
+
     defaults:
       run:
-        working-directory: /Users/hongyuliu/Desktop/Projects/Dataform Requests/4. On the Agenda
         shell: bash
 
     steps:
       - name: Pull latest code
-        run: git pull origin main
+        run: cd "$PROJECT_DIR" && git pull origin main
 
       - name: Run pipeline
         # LM Studio must be running on your machine before this fires.
-        run: python3 pipeline.py
+        run: cd "$PROJECT_DIR" && python3 pipeline.py
 
       - name: Commit and push results
         run: |
+          cd "$PROJECT_DIR"
           git config user.name "Agenda Bot"
           git config user.email "agenda-bot@users.noreply.github.com"
           git add high.csv medium.csv low.csv
-          # Only commit if there are actual changes
           git diff --cached --quiet || git commit -m "Weekly agenda results - $(date +'%Y-%m-%d')"
           git push
 
