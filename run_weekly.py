@@ -16,6 +16,10 @@ parseable = townlist[townlist["parseable"] == "y"]
 townweb = parseable[parseable["agenda-location"] == "TownWeb"]
 townweb_urls = list(zip(townweb["Link to board agenda site"].tolist(), townweb["Gov body"].tolist()))
 
+def _format_progress(current, total):
+    percent = (current / total * 100) if total else 0
+    return f"[{current}/{total} {percent:.1f}%]"
+
 def download_file(url, dest_folder, new_filename=None):
     ext = os.path.splitext(url.split("/")[-1])[1] or ".pdf"
     local_filename = new_filename if new_filename else url.split("/")[-1]
@@ -35,12 +39,14 @@ def download_file(url, dest_folder, new_filename=None):
 def process_townweb_agendas(headless=False):
     os.makedirs("./temps", exist_ok=True)
     failed_urls = []
+    total_urls = len(townweb_urls)
+    print(f"Processing {total_urls} TownWeb agenda site(s).")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless)
-        for url, gov_body in townweb_urls:
+        for idx, (url, gov_body) in enumerate(townweb_urls, start=1):
             try:
                 page = browser.new_page()
-                print(f"Visiting {url}")
+                print(f"{_format_progress(idx, total_urls)} Visiting {url}")
                 page.goto(url)
                 # Wait for at least one table to load
                 page.wait_for_selector("table.tw-meeting-repo-table")

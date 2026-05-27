@@ -69,6 +69,11 @@ client = OpenAI(
 
 MODEL_NAME = "qwen3.5-9b"
 
+KEYWORD_SCORES_PATH = "./keyword_scores.csv"
+HIGH_SCORE_THRESHOLD = 80
+MEDIUM_SCORE_THRESHOLD = 40
+_keyword_scores_cache = None
+
 SYSTEM_PROMPT = """
 You are extracting agenda items for a newsroom.
 
@@ -252,11 +257,79 @@ def extract_message_text(message):
 
     return ""
 
-def classify_importance(text):
+def load_keyword_scores(path=KEYWORD_SCORES_PATH):
+    scores = []
+
+    if not os.path.exists(path):
+        return scores
+
+    try:
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                keyword = row.get("keyword", "").strip().lower()
+                score = row.get("priority_score", "").strip()
+
+                if not keyword:
+                    continue
+
+                try:
+                    priority_score = int(float(score))
+                except ValueError:
+                    continue
+
+                scores.append({
+                    "keyword": keyword,
+                    "priority_score": max(0, min(100, priority_score)),
+                })
+    except Exception as e:
+        print(f"Warning: could not load keyword scores: {e}")
+
+    return scores
+
+def get_keyword_scores():
+    global _keyword_scores_cache
+
+    if _keyword_scores_cache is None:
+        _keyword_scores_cache = load_keyword_scores()
+
+    return _keyword_scores_cache
+
+def priority_from_score(score):
+    if score >= HIGH_SCORE_THRESHOLD:
+        return "high"
+    if score >= MEDIUM_SCORE_THRESHOLD:
+        return "medium"
+    return "low"
+
+def score_text_with_keywords(text, keyword_scores=None):
+    scores = keyword_scores if keyword_scores is not None else get_keyword_scores()
+    lower = text.lower()
+    matched = []
+
+    for row in scores:
+        keyword = str(row.get("keyword", "")).strip().lower()
+        if not keyword:
+            continue
+
+        pattern = r"(?<!\w)" + re.escape(keyword) + r"(?!\w)"
+        if re.search(pattern, lower):
+            matched.append((keyword, int(row.get("priority_score", 0))))
+
+    if not matched:
+        return None, []
+
+    matched.sort(key=lambda item: (-item[1], item[0]))
+    return matched[0][1], [keyword for keyword, _score in matched]
+
+def classify_importance(text, keyword_scores=None):
     lower = text.lower()
 
     if is_boilerplate(lower) or is_routine_low_value(lower):
         return "low"
+
+    keyword_score, _matched_keywords = score_text_with_keywords(lower, keyword_scores)
+    if keyword_score is not None:
+        return priority_from_score(keyword_score)
 
     high_terms = [
         "rezoning", "rezone", "zoning map", "conditional use",
