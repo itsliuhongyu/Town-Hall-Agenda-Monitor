@@ -1,0 +1,7 @@
+pandas
+requests
+playwright
+openai
+pdfplumber
+python-docx
+beautifulsoup4
