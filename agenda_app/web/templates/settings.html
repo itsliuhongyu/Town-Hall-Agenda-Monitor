@@ -1,0 +1,29 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Local configuration</p><h1>Settings</h1></div>
+  <div class="heading-actions"><span id="settings-message" class="help-text" aria-live="polite"></span></div>
+</section>
+<div id="settings-error" class="message error" role="alert" hidden></div>
+<div class="settings-grid">
+  <section class="section-block" aria-labelledby="model-title"><div class="section-heading"><div><p class="eyebrow">Local Ollama</p><h2 id="model-title">Installed model inventory</h2></div><span id="model-connection" class="status neutral">Unknown</span></div>
+    <p id="model-state-note" class="muted">Model inventory is read only until you explicitly refresh.</p>
+    <div class="toolbar-row"><button class="button secondary" id="refresh-models" type="button">Refresh models</button><button class="button quiet" id="test-connection" type="button">Test connection</button><span id="model-last-seen" class="muted"></span></div>
+    <label for="model-select">Exact installed model</label><select id="model-select"><option value="">No model selected</option></select>
+    <p id="model-digest" class="code-note"></p>
+    <button class="button primary" id="save-model" type="button">Save selection</button>
+  </section>
+  <section class="section-block" aria-labelledby="run-settings-title"><div class="section-heading"><div><p class="eyebrow">Next run</p><h2 id="run-settings-title">Window and workers</h2></div><span id="settings-revision" class="muted"></span></div>
+    <form id="settings-form" class="form-stack">
+      <div class="two-col"><label>Days back<input id="days-back" type="number" min="0" max="365"></label><label>Days forward<input id="days-forward" type="number" min="0" max="365"></label></div>
+      <div class="two-col"><label>Download workers<input id="download-workers" type="number" min="1" max="4"></label><label>Analysis workers<input id="analysis-workers" type="number" min="1" max="4"></label></div>
+      <div class="two-col"><label>Run timeout (minutes)<input id="run-timeout" type="number" min="1" max="180"></label><label>Inference timeout (seconds)<input id="inference-timeout" type="number" min="3" max="600"></label></div>
+      <label>UI timezone<input id="ui-timezone" type="text" autocomplete="off"></label>
+      <label>Ollama loopback URL<input id="ollama-url" type="url" inputmode="url"></label>
+      <label class="checkbox-label"><input id="allow-visible-browser" type="checkbox"> Use a visible browser window to read BoardDocs agendas. Other sources stay in the background.</label>
+      <button class="button primary" type="submit">Save run settings</button>
+    </form>
+  </section>
+  <section class="section-block" aria-labelledby="sources-settings-title"><div class="section-heading"><div><p class="eyebrow">Sources</p><h2 id="sources-settings-title">Source timezones and enablement</h2></div></div><label for="source-search">Search sources<input id="source-search" type="search" maxlength="120" placeholder="Name, platform, or URL"></label><div id="settings-sources" class="settings-sources"><div class="loading-line">Loading sources…</div></div><div class="pagination source-pagination"><button class="button quiet" id="sources-previous" type="button" disabled>Previous</button><span id="sources-page" class="muted">Page 1</span><button class="button quiet" id="sources-next" type="button" disabled>Next</button></div></section>
+  <section class="section-block" aria-labelledby="source-initialization-title"><div class="section-heading"><div><p class="eyebrow">Source setup</p><h2 id="source-initialization-title">Town list initialization</h2></div><span id="source-initialization-status" class="status neutral">Not checked</span></div><p id="source-initialization-message" class="muted">On first local startup, only supported parseable sources are copied from the maintained town list. Agenda history and policies are not imported.</p><div class="toolbar-row"><button class="button secondary" id="initialize-sources" type="button">Retry source setup</button><a id="source-diagnostics-link" class="button quiet" href="#" hidden>Download diagnostics</a></div></section>
+  <section class="section-block" aria-labelledby="policy-title"><div class="section-heading"><div><p class="eyebrow">Rule calibration</p><h2 id="policy-title">Policy calibration</h2></div><span id="policy-version" class="muted"></span></div><form id="policy-form" class="form-stack"><label>Strategy<select id="policy-strategy"><option value="model_first">Model first</option><option value="rules_override">Rules override</option></select></label><div class="editor-heading"><h3>Priority rules</h3><button class="button quiet" id="add-rule" type="button">Add rule</button></div><div id="policy-rules-editor" class="rule-editor"></div><div class="editor-heading"><h3>Removal rules</h3><button class="button quiet" id="add-removal" type="button">Add removal</button></div><div id="policy-removals-editor" class="rule-editor"></div><label for="policy-reason">Change reason<input id="policy-reason" maxlength="500"></label><div class="toolbar-row"><button class="button secondary" id="preview-policy" type="button">Preview</button><button class="button primary" type="submit">Save policy</button><button class="button quiet" id="undo-policy" type="button">Undo current policy</button></div><div id="policy-preview" class="message" role="status" hidden></div></form></section>
+  <section class="section-block" aria-labelledby="import-title"><div class="section-heading"><div><p class="eyebrow">Migration</p><h2 id="import-title">Legacy CSV import</h2></div></div><p id="import-summary" class="muted">No import has been run for this data directory.</p><div class="toolbar-row"><button class="button secondary" id="import-legacy" type="button">Import configured legacy CSVs</button><a id="unresolved-link" class="button quiet" href="#" hidden>Download unresolved rows</a></div></section>
+</div>
