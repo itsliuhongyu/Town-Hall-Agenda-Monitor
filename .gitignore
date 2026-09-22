@@ -1,13 +1,52 @@
 # Downloaded agenda files (regenerated each run)
 temps/
 
+# Analysis cache (regenerated each run)
+.analysis_cache/
+
+# Durable local application data (SQLite, blobs, exports, locks)
+data/
+output/
+run-output.json
+
+# Interrupted legacy pipeline staging
+.pipeline-staging-*/
+
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
 .env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
 venv/
 .venv/
 
+# Python tool caches and isolated test environments
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+# Python build and packaging output
+/build/
+/dist/
+*.egg-info/
+
+# Generated coverage and browser test reports
+.coverage
+.coverage.*
+/htmlcov/
+/coverage.xml
+/test-results/
+/playwright-report/
+
 # macOS
 .DS_Store
+
+# Existing repository-specific exclusions
+/tests
+/docs

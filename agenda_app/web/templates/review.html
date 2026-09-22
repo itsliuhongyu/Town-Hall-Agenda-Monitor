@@ -1,0 +1,28 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Human review</p><h1>Review agenda items</h1></div>
+  <div class="heading-actions"><button class="button secondary" id="export-items" title="Export filtered CSV" aria-label="Export filtered CSV" type="button">Export CSV</button><span id="review-run-label" class="help-text"></span></div>
+</section>
+<div id="review-message" class="message" role="status" hidden></div>
+<section class="review-workspace" aria-label="Review workspace">
+  <div class="review-list-pane" id="review-list-pane">
+    <form class="filter-panel" id="filters-form">
+      <div class="filter-grid">
+        <label>Search<input id="filter-q" name="q" type="search" maxlength="200" placeholder="Title, evidence, or note"></label>
+        <label>Priority<select id="filter-priority" name="priority"><option value="">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+        <label>Source<select id="filter-source" name="source_id"><option value="">All sources</option></select></label>
+        <label>Review state<select id="filter-state" name="review_state"><option value="">All states</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="needs_review">Needs review</option></select></label>
+        <label>Run scope<select id="filter-scope" name="scope"><option value="run">Current run</option><option value="history">History</option></select></label>
+        <label>Run<select id="filter-run" name="run_id"><option value="">Latest publication</option></select></label>
+        <label>Meeting from<input id="filter-from" name="from" type="date"></label>
+        <label>Meeting to<input id="filter-to" name="to" type="date"></label>
+      </div>
+      <div class="toolbar-row"><button class="button quiet" type="submit">Apply filters</button><button class="button quiet" id="reset-filters" type="button">Reset filters</button><span id="results-summary" class="muted"></span></div>
+    </form>
+    <div id="items-list" class="items-list" aria-live="polite"><div class="empty-state compact">Loading items…</div></div>
+    <div class="pagination"><button class="button quiet" id="previous-page" title="Previous page" aria-label="Previous page" type="button">Previous</button><span id="page-label" class="muted">Page 1</span><button class="button quiet" id="next-page" title="Next page" aria-label="Next page" type="button">Next</button></div>
+  </div>
+  <div class="review-detail-pane" id="review-detail-pane" aria-live="polite">
+    <button class="button quiet mobile-only" id="back-to-results" type="button">Back to results</button>
+    <div id="detail-content" class="empty-state">Select an item to review.</div>
+  </div>
+</section>

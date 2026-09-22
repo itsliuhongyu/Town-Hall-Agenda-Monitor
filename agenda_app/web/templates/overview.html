@@ -1,0 +1,37 @@
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Operations</p>
+    <h1>Overview &amp; Runs</h1>
+  </div>
+  <div class="heading-actions">
+    <button class="button primary" id="start-run" type="button" disabled>Start new run</button>
+    <span class="help-text" id="start-run-help">One active run at a time.</span>
+  </div>
+</section>
+
+<div id="overview-message" class="message" role="status" hidden></div>
+
+<section class="summary-grid" aria-label="Run summary">
+  <div class="summary-cell"><span class="label">Latest attempt</span><strong id="latest-attempt">Never</strong><span id="latest-attempt-meta" class="muted"></span></div>
+  <div class="summary-cell"><span class="label">Last complete publication</span><strong id="last-publication">Never</strong><span id="last-publication-meta" class="muted"></span></div>
+  <div class="summary-cell"><span class="label">Last successful full run</span><strong id="last-full-success">Never</strong><span id="last-full-success-meta" class="muted"></span></div>
+  <div class="summary-cell"><span class="label">Review queue</span><strong id="review-count">0</strong><span id="review-count-meta" class="muted">unreviewed items</span></div>
+</section>
+
+<section class="section-block" id="active-run-section" aria-labelledby="active-run-title">
+  <div class="section-heading"><div><p class="eyebrow">Live progress</p><h2 id="active-run-title">Active run</h2></div><span id="active-run-badge" class="status neutral">No active run</span></div>
+  <div id="active-run-content" class="empty-state compact">No run is active. Start a run when sources are ready.</div>
+</section>
+
+<section class="section-block" aria-labelledby="sources-title">
+  <div class="section-heading"><div><p class="eyebrow">Coverage</p><h2 id="sources-title">Source health</h2></div><span id="coverage-summary" class="muted"></span></div>
+  <form id="retry-form">
+    <div id="source-list" class="source-list"><div class="loading-line">Loading sources…</div></div>
+    <div class="toolbar-row"><button class="button secondary" id="retry-selected" type="submit" disabled>Retry selected failed sources</button><span class="muted" id="retry-help">Select failed or partial sources from the latest run.</span></div>
+  </form>
+</section>
+
+<section class="section-block" aria-labelledby="history-title">
+  <div class="section-heading"><div><p class="eyebrow">Durable history</p><h2 id="history-title">Run history</h2></div><button class="button quiet" id="refresh-overview" title="Refresh run history" aria-label="Refresh run history" type="button">Refresh</button></div>
+  <div class="table-wrap"><table class="data-table"><caption class="sr-only">Recent agenda collection runs</caption><thead><tr><th scope="col">Started</th><th scope="col">Kind</th><th scope="col">Status</th><th scope="col">Phase</th><th scope="col">Coverage</th><th scope="col">Publication</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead><tbody id="run-history"><tr><td colspan="7" class="empty-cell">Loading history…</td></tr></tbody></table></div>
+</section>

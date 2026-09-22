@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{CSRF_TOKEN}}">
+  <title>{{PAGE_TITLE}} · Town Hall Agenda Monitor</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body data-page="{{PAGE}}">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="Town Hall Agenda Monitor overview">Town Hall Agenda Monitor</a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a data-nav="overview" href="/">Overview</a>
+        <a data-nav="review" href="/review">Review</a>
+        <a data-nav="settings" href="/settings">Settings</a>
+      </nav>
+      <div class="header-status" id="header-status" aria-live="polite">Loading status…</div>
+    </div>
+  </header>
+  <main class="app-shell">{{PAGE_CONTENT}}</main>
+  <script src="/static/app.js" defer></script>
+  <script src="/static/{{PAGE}}.js" defer></script>
+</body>
+</html>
